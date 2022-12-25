@@ -39,6 +39,18 @@ RSpec.describe "Game", type: :system do
     expect(page).to have_content(/Player 2: #{game.player_2.id}/)
   end
 
+  scenario "a third user tries to join" do
+    game = create(:game)
+
+    visit root_path
+
+    game.join(create(:session))
+
+    click_on "Join game #{game.id}"
+
+    expect(page).to have_content(/Cannot join game/)
+  end
+
   def create_a_game
     visit root_path
     click_on "Create a game"

@@ -22,10 +22,13 @@ class GamesController < ApplicationController
   def join
     game = Game.find(params[:id])
 
-    game.update!(player_2: current_session)
-
     respond_to do |format|
-      format.html { redirect_to game_path(game) }
+      if game.join(current_session)
+        format.html { redirect_to game_path(game) }
+      else
+        flash[:warning] = game.errors.full_messages.first
+        format.html { redirect_to games_path }
+      end
     end
   end
 
