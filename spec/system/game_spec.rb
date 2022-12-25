@@ -26,12 +26,17 @@ RSpec.describe "Game", type: :system do
     expect(current_path).to eq(game_path(game))
   end
 
-  scenario "another user sees a list of active games" do
+  scenario "another user may join a game" do
     game = create(:game)
 
     visit root_path
+    click_on "Join game #{game.id}"
 
-    expect(page).to have_content(/Join game #{game.id}/)
+    game.reload
+
+    expect(current_path).to eq(game_path(game))
+    expect(page).to have_content(/Player 1: #{game.player_1.id}/)
+    expect(page).to have_content(/Player 2: #{game.player_2.id}/)
   end
 
   def create_a_game

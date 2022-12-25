@@ -1,3 +1,6 @@
 <ul>
-  <li>Player 1: <%= @game.player_1.id %></li>
+  <li>
+    Player 1: <%= @game.player_1.id %>
+    Player 2: <%= @game.player_2 ? @game.player_2.id : "Waiting on player 2" %>
+  </li>
 </ul>

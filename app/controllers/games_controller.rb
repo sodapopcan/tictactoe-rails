@@ -19,6 +19,16 @@ class GamesController < ApplicationController
     end
   end
 
+  def join
+    game = Game.find(params[:id])
+
+    game.update!(player_2: current_session)
+
+    respond_to do |format|
+      format.html { redirect_to game_path(game) }
+    end
+  end
+
   private
 
   def redirect_to_current_game
