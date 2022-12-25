@@ -12,21 +12,22 @@ RSpec.describe "Game", type: :system do
   end
 
   scenario "a user starts a game" do
-    visit root_path
-
-    click_on "Create a game"
+    create_a_game
 
     expect(page).to have_content(/Player 1: \d+/)
   end
 
   scenario "a user is redirected gack to the game they are playing" do
-    visit root_path
-
-    click_on "Create a game"
+    create_a_game
 
     visit root_path
 
     game = Game.first
     expect(current_path).to eq(game_path(game))
+  end
+
+  def create_a_game
+    visit root_path
+    click_on "Create a game"
   end
 end
