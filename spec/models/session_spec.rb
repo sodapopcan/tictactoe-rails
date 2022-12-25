@@ -1,5 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe Session, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe "#current_game" do
+    it "returns the current game" do
+      session = create(:session)
+      game = create(:game, player_1: session)
+
+      expect(session.reload.current_game).to eq(game)
+    end
+  end
 end
