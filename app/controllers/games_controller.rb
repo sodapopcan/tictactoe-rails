@@ -9,6 +9,8 @@ class GamesController < ApplicationController
   end
 
   def create
+    session[:id] = current_session.id
+
     game = Game.create!(player_1: current_session)
 
     respond_to do |format|
