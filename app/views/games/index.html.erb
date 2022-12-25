@@ -1,1 +1,7 @@
 <%= button_to "Create a game", games_path, method: :post, data: { turbo_method: :post } %>
+
+<ul>
+<%= @games.each do |game| %>
+  <li><%= link_to "Join game #{game.id}", "/" %></li>
+<% end %>
+</ul>

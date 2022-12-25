@@ -2,6 +2,7 @@ class GamesController < ApplicationController
   before_action :redirect_to_current_game, only: [:index]
 
   def index
+    @games = Game.all
   end
 
   def show
