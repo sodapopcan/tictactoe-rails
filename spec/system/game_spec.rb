@@ -55,8 +55,7 @@ RSpec.describe "Game", type: :system do
 
   feature "playing a game" do
     scenario "player 1 makes a move" do
-      visit root_path
-      click_on "Create a game"
+      create_a_game
 
       game = Game.first
       game.join(create(:session))
