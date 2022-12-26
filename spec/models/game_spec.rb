@@ -30,17 +30,17 @@ RSpec.describe Game, type: :model do
 
       it "allows players to make their moves in turn" do
         game.move(player_2, 0)
-        expect(game.reload.errors.full_messages.first).to eq("It's not your turn")
+        expect(game.errors.full_messages.first).to eq("It's not your turn")
 
         game.move(player_1, 0)
-        expect(game.reload.board).to eq([
+        expect(game.board).to eq([
           player_1.id, nil, nil,
           nil, nil, nil,
           nil, nil, nil
         ])
 
         game.move(player_1, 1)
-        expect(game.reload.errors.full_messages.first).to eq("It's not your turn")
+        expect(game.errors.full_messages.first).to eq("It's not your turn")
 
         game.move(player_2, 7)
         expect(game.board).to eq([
@@ -54,7 +54,7 @@ RSpec.describe Game, type: :model do
         game.move(player_1, 1)
         game.move(player_2, 1)
 
-        expect(game.reload.errors.full_messages.first).to eq("Space already taken")
+        expect(game.errors.full_messages.first).to eq("Space already taken")
       end
     end
   end
@@ -101,7 +101,7 @@ RSpec.describe Game, type: :model do
 
       game.join(new_session)
 
-      expect(game.reload.player_2).to eq(new_session)
+      expect(game.player_2).to eq(new_session)
     end
   end
 end
