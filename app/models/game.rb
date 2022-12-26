@@ -19,6 +19,7 @@ class Game < ApplicationRecord
 
   def move(player, board_index)
     errors.add(:base, "It's not your turn") and return unless player == current_turn
+    errors.add(:base, "Space already taken") and return if board[board_index]
 
     self.board[board_index] = player.id
 

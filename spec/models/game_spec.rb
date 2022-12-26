@@ -40,6 +40,13 @@ RSpec.describe Game, type: :model do
         nil, player_2.id, nil
       ])
     end
+
+    it "does not allow playing on an already taken space" do
+      game.move(player_1, 1)
+      game.move(player_2, 1)
+
+      expect(game.reload.errors.full_messages.first).to eq("Space already taken")
+    end
   end
 
   describe "#join" do
