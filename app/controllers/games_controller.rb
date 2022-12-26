@@ -20,6 +20,8 @@ class GamesController < ApplicationController
   end
 
   def join
+    session[:id] = current_session.id
+
     game = Game.find(params[:id])
 
     respond_to do |format|

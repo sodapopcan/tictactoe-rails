@@ -59,19 +59,36 @@ RSpec.describe "Game", type: :system do
   end
 
   feature "playing a game" do
-    scenario "player 1 makes a move" do
-      create_a_game
+    let(:x) { Capybara::Session.new(:rack_test, Rails.application) }
+    let(:o) { Capybara::Session.new(:rack_test, Rails.application) }
 
-      game = Game.first
-      game.join(create(:session))
+    scenario "player 1 wins" do
+      x.visit root_path
+      x.click_on "Create a game"
+      o.visit root_path
+      o.click_on "Join game"
 
-      visit game_path(game)
-      find("[data-cell-index=0] input[type=submit]").click
+      x.find("[data-cell-index=0] input[type=submit]").click
 
-      within "[data-cell-index=0]" do
-        expect(page).not_to have_selector("form")
-        expect(page).to have_selector("[data-player=x]")
+      x.within "[data-cell-index=0]" do
+        expect(x).not_to have_selector("form")
+        expect(x).to have_selector("[data-player=x]")
       end
+
+      x.find("[data-cell-index=1] input[type=submit]").click
+
+      expect(x).to have_content(/It's not your turn/)
+
+      o.find("[data-cell-index=1] input[type=submit]").click
+
+      o.within "[data-cell-index=1]" do
+        expect(o).not_to have_selector("form")
+        expect(o).to have_selector("[data-player=y]")
+      end
+
+      o.find("[data-cell-index=2] input[type=submit]").click
+
+      expect(o).to have_content(/It's not your turn/)
     end
   end
 
