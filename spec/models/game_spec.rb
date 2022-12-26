@@ -84,5 +84,14 @@ RSpec.describe Game, type: :model do
 
       expect(game.errors.full_messages.first).to eq("Cannot join game")
     end
+
+    it "returns true when sucessfully joining a game" do
+      game = create(:game)
+      new_session = create(:session)
+
+      game.join(new_session)
+
+      expect(game.reload.player_2).to eq(new_session)
+    end
   end
 end

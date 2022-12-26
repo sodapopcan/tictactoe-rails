@@ -11,10 +11,10 @@ class Game < ApplicationRecord
 
   before_create { self.board = BOARD.dup }
 
-  def join(player_2)
-    errors.add(:base, "Cannot join game") and return if player_2
+  def join(new_player)
+    errors.add(:base, "Cannot join game") and return if player_2.present?
 
-    self.player_2 = player_2
+    update(player_2: new_player)
   end
 
   def move(player, board_index)
