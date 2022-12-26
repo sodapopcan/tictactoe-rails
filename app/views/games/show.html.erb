@@ -15,7 +15,20 @@
     <% @game.board.each.with_index do |cell, cell_index| %>
       <div class="bg-slate-100" data-cell-index="<%= cell_index %>">
         <% if @game.board[cell_index] == @game.player_1_id.to_i %>
-          <div data-player="x">
+          <div data-player="x" class="
+            grid place-items-center
+            relative
+            w-full
+            h-full
+            before:absolute
+            before:w-full
+            before:border-[4px]
+            before:rotate-45
+            after:absolute
+            after:w-full
+            after:border-[4px]
+            after:-rotate-45
+          ">
           </div>
         <% else %>
           <%= form_with url: play_game_path(@game, cell_index), method: :put, class: "w-full h-full" do |f| %>
