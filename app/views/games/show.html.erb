@@ -1,6 +1,28 @@
 <ul>
   <li>
-    Player 1: <%= @game.player_1.id %>
-    Player 2: <%= @game.player_2 ? @game.player_2.id : "Waiting on player 2" %>
+    <div>
+      Player 1: <%= @game.player_1.id %>
+    </div>
+
+    <div>
+      Player 2: <%= @game.player_2 ? @game.player_2.id : "Waiting on player 2" %>
+    </div>
   </li>
 </ul>
+
+<div class="grid place-items-center w-full h-full">
+  <div class="grid grid-rows-[100px_100px_100px] grid-cols-[100px_100px_100px] gap-[1px] p-0.5 bg-black">
+    <% @game.board.each.with_index do |cell, cell_index| %>
+      <div class="bg-slate-100" data-cell-index="<%= cell_index %>">
+        <% if @game.board[cell_index] == @game.player_1_id.to_i %>
+          <div data-player="x">
+          </div>
+        <% else %>
+          <%= form_with url: play_game_path(@game, cell_index), method: :put, class: "w-full h-full" do |f| %>
+            <%= f.submit "", class: "block w-full h-full cursor-pointer" %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

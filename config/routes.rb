@@ -4,5 +4,6 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "games#index"
   resources :games
-  put "join/:id", to: "games#join", as: :join_game
+  put "games/:id/join", to: "games#join", as: :join_game
+  put "games/:id/move/:cell_index", to: "games#move", as: :play_game
 end

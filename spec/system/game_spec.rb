@@ -53,6 +53,24 @@ RSpec.describe "Game", type: :system do
     end
   end
 
+  feature "playing a game" do
+    scenario "player 1 makes a move" do
+      visit root_path
+      click_on "Create a game"
+
+      game = Game.first
+      game.join(create(:session))
+
+      visit game_path(game)
+      find("[data-cell-index=0] input[type=submit]").click
+
+      within "[data-cell-index=0]" do
+        expect(page).not_to have_selector("form")
+        expect(page).to have_selector("[data-player=x]")
+      end
+    end
+  end
+
   def create_a_game
     visit root_path
     click_on "Create a game"

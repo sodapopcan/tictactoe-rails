@@ -32,6 +32,19 @@ class GamesController < ApplicationController
     end
   end
 
+  def move
+    game = Game.find(params[:id])
+
+    respond_to do |format|
+      if game.move(current_session, params[:cell_index].to_i)
+        format.html { redirect_to game_path(game) }
+      else
+        flash[:warning] = game.errors.full_messages.first
+        format.html { redirect_to game_path(game) }
+      end
+    end
+  end
+
   private
 
   def redirect_to_current_game
