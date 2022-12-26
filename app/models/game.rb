@@ -18,7 +18,14 @@ class Game < ApplicationRecord
   end
 
   def move(player, board_index)
+    errors.add(:base, "It's not your turn") and return unless player == current_turn
+
     self.board[board_index] = player.id
+
     save
+  end
+
+  def current_turn
+    board.compact.count % 2 == 0 ? player_1 : player_2
   end
 end

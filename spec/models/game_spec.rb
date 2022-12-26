@@ -16,7 +16,13 @@ RSpec.describe Game, type: :model do
     let(:player_1) { game.player_1 }
     let(:player_2) { game.player_2 }
 
-    it "player 1 can make a move" do
+    it "doesn't allow player 2 to make a move" do
+      game.move(player_2, 0)
+
+      expect(game.reload.errors.full_messages.first).to eq("It's not your turn")
+    end
+
+    it "allows player 1 can make a move" do
       game.move(player_1, 0)
 
       expect(game.reload.board).to eq([
