@@ -17,18 +17,27 @@ RSpec.describe Game, type: :model do
     let(:player_2) { game.player_2 }
 
     it "doesn't allow player 2 to make a move" do
-      game.move(player_2, 0)
-
-      expect(game.reload.errors.full_messages.first).to eq("It's not your turn")
     end
 
-    it "allows player 1 can make a move" do
-      game.move(player_1, 0)
+    it "allows players to make their moves in turn" do
+      game.move(player_2, 0)
+      expect(game.reload.errors.full_messages.first).to eq("It's not your turn")
 
+      game.move(player_1, 0)
       expect(game.reload.board).to eq([
         player_1.id, nil, nil,
         nil, nil, nil,
         nil, nil, nil
+      ])
+
+      game.move(player_1, 1)
+      expect(game.reload.errors.full_messages.first).to eq("It's not your turn")
+
+      game.move(player_2, 7)
+      expect(game.board).to eq([
+        player_1.id, nil, nil,
+        nil, nil, nil,
+        nil, player_2.id, nil
       ])
     end
   end
