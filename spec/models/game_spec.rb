@@ -49,6 +49,32 @@ RSpec.describe Game, type: :model do
     end
   end
 
+  describe "#winner" do
+    it "returns nil if no winner yet" do
+      game = create(:game, :in_progress)
+
+      expect(game.winner).to be_nil
+    end
+
+    it "exhaustively checks all the win conditions" do
+      [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+        [6, 4, 2], [0, 4, 8]
+      ].each do |(a, b, c)|
+        game = create(:game, :in_progress)
+        [game.player_1, game.player_2].each do |player|
+          game.board[a] = player.id
+          game.board[b] = player.id
+          game.board[c] = player.id
+          game.save
+
+          expect(game.winner).to eq(player)
+        end
+      end
+    end
+  end
+
   describe "#join" do
     it "errors when a third player tries to join a game" do
       game = create(:game, :in_progress)

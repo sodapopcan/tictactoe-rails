@@ -26,6 +26,16 @@ class Game < ApplicationRecord
     save
   end
 
+  def winner
+    WIN_CONDITIONS.each do |(a, b, c)|
+      [player_1, player_2].each do |player|
+        return player if board[a] == player.id && board[b] == player.id && board[c] == player.id
+      end
+    end
+
+    nil
+  end
+
   def current_turn
     board.compact.count % 2 == 0 ? player_1 : player_2
   end
