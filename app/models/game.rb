@@ -18,6 +18,7 @@ class Game < ApplicationRecord
   end
 
   def move(player, board_index)
+    errors.add(:base, "Waiting for another player") and return unless player_1 && player_2
     errors.add(:base, "It's not your turn") and return unless player == current_turn
     errors.add(:base, "Space already taken") and return if board[board_index]
 

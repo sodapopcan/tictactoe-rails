@@ -12,40 +12,50 @@ RSpec.describe Game, type: :model do
   end
 
   describe "#move" do
-    let(:game) { create(:game, :in_progress) }
-    let(:player_1) { game.player_1 }
-    let(:player_2) { game.player_2 }
+    context "with one player" do
+      it "requires two players before any move may be made" do
+        player_1 = create(:session)
+        game = create(:game, player_1: player_1)
 
-    it "doesn't allow player 2 to make a move" do
+        game.move(player_1, 6)
+
+        expect(game.errors.full_messages).to include("Waiting for another player")
+      end
     end
 
-    it "allows players to make their moves in turn" do
-      game.move(player_2, 0)
-      expect(game.reload.errors.full_messages.first).to eq("It's not your turn")
+    context "with both players" do
+      let(:game) { create(:game, :in_progress) }
+      let(:player_1) { game.player_1 }
+      let(:player_2) { game.player_2 }
 
-      game.move(player_1, 0)
-      expect(game.reload.board).to eq([
-        player_1.id, nil, nil,
-        nil, nil, nil,
-        nil, nil, nil
-      ])
+      it "allows players to make their moves in turn" do
+        game.move(player_2, 0)
+        expect(game.reload.errors.full_messages.first).to eq("It's not your turn")
 
-      game.move(player_1, 1)
-      expect(game.reload.errors.full_messages.first).to eq("It's not your turn")
+        game.move(player_1, 0)
+        expect(game.reload.board).to eq([
+          player_1.id, nil, nil,
+          nil, nil, nil,
+          nil, nil, nil
+        ])
 
-      game.move(player_2, 7)
-      expect(game.board).to eq([
-        player_1.id, nil, nil,
-        nil, nil, nil,
-        nil, player_2.id, nil
-      ])
-    end
+        game.move(player_1, 1)
+        expect(game.reload.errors.full_messages.first).to eq("It's not your turn")
 
-    it "does not allow playing on an already taken space" do
-      game.move(player_1, 1)
-      game.move(player_2, 1)
+        game.move(player_2, 7)
+        expect(game.board).to eq([
+          player_1.id, nil, nil,
+          nil, nil, nil,
+          nil, player_2.id, nil
+        ])
+      end
 
-      expect(game.reload.errors.full_messages.first).to eq("Space already taken")
+      it "does not allow playing on an already taken space" do
+        game.move(player_1, 1)
+        game.move(player_2, 1)
+
+        expect(game.reload.errors.full_messages.first).to eq("Space already taken")
+      end
     end
   end
 
