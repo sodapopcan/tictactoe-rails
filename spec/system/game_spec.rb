@@ -41,15 +41,20 @@ RSpec.describe "Game", type: :system do
     end
 
     scenario "a third user tries to join" do
-      game = create(:game)
+      session_1 = Capybara::Session.new(:rack_test, Rails.application)
+      session_2 = Capybara::Session.new(:rack_test, Rails.application)
+      session_3 = Capybara::Session.new(:rack_test, Rails.application)
 
-      visit root_path
+      session_1.visit root_path
+      session_1.click_on "Create a game"
 
-      game.join(create(:session))
+      session_2.visit root_path
+      session_3.visit root_path
 
-      click_on "Join game #{game.id}"
+      session_2.click_on "Join game"
+      session_3.click_on "Join game"
 
-      expect(page).to have_content(/Cannot join game/)
+      expect(session_3).to have_content(/Cannot join game/)
     end
   end
 
