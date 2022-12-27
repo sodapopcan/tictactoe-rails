@@ -48,4 +48,8 @@ class Game < ApplicationRecord
   def current_turn
     board.compact.count % 2 == 0 ? player_1 : player_2
   end
+
+  def has_player?(player)
+    player_1 == player || player_2 == player
+  end
 end

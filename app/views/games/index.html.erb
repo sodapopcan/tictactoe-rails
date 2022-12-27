@@ -2,6 +2,12 @@
 
 <ul>
 <% @games.each do |game| %>
-  <li><%= link_to "Join game #{game.id}", join_game_path(game), method: :put, data: { turbo_method: :put } %></li>
+    <li>
+      <% if game.has_player?(current_session) %>
+        <%= link_to "Join game #{game.id}", join_game_path(game), method: :put, data: { turbo_method: :put } %>
+      <% else %>
+        <%= link_to "Game #{game.id}", game_path(game) %>
+      <% end %>
+    </li>
 <% end %>
 </ul>

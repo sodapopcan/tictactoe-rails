@@ -32,13 +32,13 @@ RSpec.describe "Game", type: :system do
       expect(page).to have_content(/Player 1: \d+/)
     end
 
-    scenario "a user is redirected gack to the game they are playing" do
+    scenario "a user can't start more than one game" do
+      other_game = create(:game)
       create_a_game
-
       visit root_path
 
-      game = Game.first
-      expect(current_path).to eq(game_path(game))
+      expect(page).not_to have_content(/Join game #{other_game.id}/)
+      expect(page).to have_content(/Game #{other_game.id}/)
     end
 
     scenario "another user may join a game" do
@@ -129,7 +129,7 @@ RSpec.describe "Game", type: :system do
 
       expect(x).to have_content(/Game Over. Player 1 wins/)
 
-      o.visit current_path
+      o.refresh
 
       expect(o).to have_content(/Game Over. Player 1 wins/)
     end
