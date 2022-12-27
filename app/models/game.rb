@@ -27,6 +27,10 @@ class Game < ApplicationRecord
     save
   end
 
+  def over?
+    winner.present?
+  end
+
   def winner
     WIN_CONDITIONS.each do |(a, b, c)|
       [player_1, player_2].each do |player|

@@ -79,6 +79,14 @@ RSpec.describe Game, type: :model do
     end
   end
 
+  describe "#over?" do
+    it "return true if the game is over" do
+      game = create(:game, :finished)
+
+      expect(game.over?).to be true
+    end
+  end
+
   describe "#winner" do
     it "returns nil if no winner yet" do
       game = create(:game, :in_progress)
