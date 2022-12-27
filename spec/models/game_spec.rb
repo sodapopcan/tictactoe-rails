@@ -77,6 +77,16 @@ RSpec.describe Game, type: :model do
         expect(game.errors.full_messages.first).to eq("Space already taken")
       end
     end
+
+    context "when game is over" do
+      it "does not allow moves" do
+        game = create(:game, :finished)
+
+        game.move(game.player_1, 0)
+
+        expect(game.errors.full_messages.first).to eq("The game is over")
+      end
+    end
   end
 
   describe "#over?" do
