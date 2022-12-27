@@ -86,12 +86,18 @@ RSpec.describe Game, type: :model do
 
         expect(game.errors.full_messages.first).to eq("The game is over")
       end
+
+      it "sets #finished_at" do
+        game = create(:game, :finished)
+
+        expect(game.finished_at).not_to be_nil
+      end
     end
   end
 
   describe "#over?" do
-    it "return true if the game is over" do
-      game = create(:game, :finished)
+    it "return true if finished_at is set" do
+      game = create(:game, :finished, finished_at: Time.current)
 
       expect(game.over?).to be true
     end

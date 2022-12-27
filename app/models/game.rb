@@ -24,12 +24,13 @@ class Game < ApplicationRecord
     errors.add(:base, "Space already taken") and return if board[board_index]
 
     self.board[board_index] = player.id
+    self.finished_at = Time.current if winner
 
     save
   end
 
   def over?
-    winner.present?
+    finished_at.present?
   end
 
   def winner
