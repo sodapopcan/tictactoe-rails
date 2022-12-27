@@ -39,6 +39,18 @@ class GamesController < ApplicationController
 
     respond_to do |format|
       if game.move(current_session, params[:cell_index].to_i)
+        winner = game.winner
+        name =
+          if winner == game.player_1
+            "Player 1"
+          elsif winner == game.player_2
+            "Player 2"
+          else
+            nil
+          end
+        if winner
+          flash[:warning] = "Game Over. #{name} wins"
+        end
         format.html { redirect_to game_path(game) }
       else
         flash[:warning] = game.errors.full_messages.first

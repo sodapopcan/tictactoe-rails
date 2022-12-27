@@ -63,6 +63,15 @@ RSpec.describe "Game", type: :system do
     let(:o) { Capybara::Session.new(:rack_test, Rails.application) }
 
     scenario "player 1 wins" do
+      #
+      # This plays a game that ends like this:
+      #
+      #   x | o |
+      #  ---+---+---
+      #     | x | o
+      #  ---+---+---
+      #     |   | x
+      #
       x.visit root_path
       x.click_on "Create a game"
       o.visit root_path
@@ -83,12 +92,28 @@ RSpec.describe "Game", type: :system do
 
       o.within "[data-cell-index=1]" do
         expect(o).not_to have_selector("form")
-        expect(o).to have_selector("[data-player=y]")
+        expect(o).to have_selector("[data-player=o]")
       end
 
       o.find("[data-cell-index=2] input[type=submit]").click
 
       expect(o).to have_content(/It's not your turn/)
+
+      x.find("[data-cell-index=4] input[type=submit]").click
+
+      x.within "[data-cell-index=4]" do
+        expect(x).to have_selector("[data-player=x]")
+      end
+
+      o.find("[data-cell-index=5] input[type=submit]").click
+
+      o.within "[data-cell-index=5]" do
+        expect(o).to have_selector("[data-player=o]")
+      end
+
+      x.find("[data-cell-index=8] input[type=submit]").click
+
+      expect(x).to have_content(/Game Over\. Player 1 wins/)
     end
   end
 
