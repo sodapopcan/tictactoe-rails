@@ -113,7 +113,7 @@ RSpec.describe "Game", type: :system do
 
       x.find("[data-cell-index=8] input[type=submit]").click
 
-      expect(x).to have_content(/Game Over\. Player 1 wins/)
+      expect(x).to have_content(/Game Over. Player 1 wins/)
 
       o.visit current_path
 
