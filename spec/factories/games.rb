@@ -8,6 +8,7 @@ FactoryBot.define do
 
     trait :finished do
       in_progress
+      finished_at { Time.current }
       after :create do |game|
         id = game.player_1.id
 

@@ -5,10 +5,24 @@ RSpec.describe "Game", type: :system do
     driven_by(:rack_test)
   end
 
-  scenario "a user visits the homepage" do
-    visit root_path
+  describe "homepage" do
+    scenario "a user visits the homepage" do
+      visit root_path
 
-    expect(page).to have_content(/Create a game/)
+      expect(page).to have_content(/Create a game/)
+    end
+
+    scenario "user sees open games" do
+      game_1 = create(:game)
+      game_2 = create(:game)
+      finished_game = create(:game, :finished)
+
+      visit root_path
+
+      expect(page).to have_content(/Join game #{game_1.id}/)
+      expect(page).to have_content(/Join game #{game_2.id}/)
+      expect(page).not_to have_content(/Join game #{finished_game.id}/)
+    end
   end
 
   feature "starting a game" do

@@ -11,6 +11,18 @@ RSpec.describe Game, type: :model do
     ])
   end
 
+  describe ".open" do
+    it "returns open games needing a second player" do
+      game_1 = create(:game)
+      game_2 = create(:game, :in_progress)
+      game_3 = create(:game, :finished)
+
+      games = Game.open
+
+      expect(games).to eq([game_1])
+    end
+  end
+
   describe "#join" do
     it "errors when a third player tries to join a game" do
       game = create(:game, :in_progress)

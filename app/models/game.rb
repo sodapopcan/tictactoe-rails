@@ -11,6 +11,8 @@ class Game < ApplicationRecord
 
   before_create { self.board = BOARD.dup }
 
+  scope :open, -> { where(finished_at: nil, player_2: nil) }
+
   def join(new_player)
     errors.add(:base, "Cannot join game") and return if player_2.present?
 
