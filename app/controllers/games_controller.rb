@@ -47,10 +47,6 @@ class GamesController < ApplicationController
 
   private
 
-  def redirect_to_current_game
-    redirect_to game_path(current_session.current_game) if current_session.current_game
-  end
-
   def game_over_message
     return unless @game && @game.player_1 && @game.player_2
 
