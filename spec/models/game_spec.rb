@@ -11,6 +11,26 @@ RSpec.describe Game, type: :model do
     ])
   end
 
+  describe "#join" do
+    it "errors when a third player tries to join a game" do
+      game = create(:game, :in_progress)
+      new_session = create(:session)
+
+      game.join(new_session)
+
+      expect(game.errors.full_messages.first).to eq("Cannot join game")
+    end
+
+    it "returns true when sucessfully joining a game" do
+      game = create(:game)
+      new_session = create(:session)
+
+      game.join(new_session)
+
+      expect(game.player_2).to eq(new_session)
+    end
+  end
+
   describe "#move" do
     context "with one player" do
       it "requires two players before any move may be made" do
@@ -82,26 +102,6 @@ RSpec.describe Game, type: :model do
           expect(game.winner).to eq(player)
         end
       end
-    end
-  end
-
-  describe "#join" do
-    it "errors when a third player tries to join a game" do
-      game = create(:game, :in_progress)
-      new_session = create(:session)
-
-      game.join(new_session)
-
-      expect(game.errors.full_messages.first).to eq("Cannot join game")
-    end
-
-    it "returns true when sucessfully joining a game" do
-      game = create(:game)
-      new_session = create(:session)
-
-      game.join(new_session)
-
-      expect(game.player_2).to eq(new_session)
     end
   end
 end
