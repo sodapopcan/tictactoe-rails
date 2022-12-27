@@ -10,6 +10,8 @@
   </li>
 </ul>
 
+<%= game_over_message %>
+
 <div class="grid place-items-center w-full h-full">
   <div class="grid grid-rows-[100px_100px_100px] grid-cols-[100px_100px_100px] gap-[1px] p-0.5 bg-black">
     <% @game.board.each.with_index do |cell, cell_index| %>
