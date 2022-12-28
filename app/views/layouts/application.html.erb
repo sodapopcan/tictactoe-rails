@@ -12,11 +12,9 @@
   </head>
 
   <body class="bg-slate-50">
-    <% if flash[:warning] %>
-      <div>
-        <%= flash[:warning] %>
-      </div>
-    <% end %>
+    <turbo-frame id="flash">
+      <%= render partial: "shared/flash" %>
+    </turbo-frame>
 
     <main>
       <%= yield %>

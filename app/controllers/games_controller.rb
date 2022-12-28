@@ -25,8 +25,13 @@ class GamesController < ApplicationController
     respond_to do |format|
       if game.join(current_session)
         format.html { redirect_to game_path(game) }
+        format.turbo_stream
       else
         format.html { redirect_to games_path, flash: { warning: game.errors.full_messages.first } }
+        format.turbo_stream do
+          flash.now[:warning] = game.errors.full_messages.first
+          render_flash
+        end
       end
     end
   end
@@ -37,8 +42,13 @@ class GamesController < ApplicationController
     respond_to do |format|
       if game.move(current_session, params[:cell_index].to_i)
         format.html { redirect_to game_path(game) }
+        format.turbo_stream
       else
         format.html { redirect_to game_path(game), flash: { warning: game.errors.full_messages.first } }
+        format.turbo_stream do
+          flash.now[:warning] = game.errors.full_messages.first
+          render_flash
+        end
       end
     end
   end
