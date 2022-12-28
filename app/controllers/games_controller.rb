@@ -45,6 +45,10 @@ class GamesController < ApplicationController
           partial: "games/cell",
           locals: { game: game, cell_index: params[:cell_index].to_i },
           target: "cell_#{params[:cell_index]}"
+        game.broadcast_update_to game,
+          partial: "games/game_over_message",
+          locals: { game: game },
+          target: "game-over-message"
         format.html { redirect_to game_path(game) }
         format.turbo_stream
       else
@@ -56,24 +60,4 @@ class GamesController < ApplicationController
       end
     end
   end
-
-  private
-
-  def game_over_message
-    return unless @game && @game.player_1 && @game.player_2
-
-    winner = @game.winner
-
-    name =
-      if winner == @game.player_1
-        "Player 1"
-      elsif winner == @game.player_2
-        "Player 2"
-      else
-        nil
-      end
-
-    "Game Over: #{name} wins" if winner
-  end
-  helper_method :game_over_message
 end
