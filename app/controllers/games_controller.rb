@@ -49,6 +49,7 @@ class GamesController < ApplicationController
     return unless @game && @game.player_1 && @game.player_2
 
     winner = @game.winner
+
     name =
       if winner == @game.player_1
         "Player 1"
