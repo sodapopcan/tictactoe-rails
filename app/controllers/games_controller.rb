@@ -26,8 +26,7 @@ class GamesController < ApplicationController
       if game.join(current_session)
         format.html { redirect_to game_path(game) }
       else
-        flash[:warning] = game.errors.full_messages.first
-        format.html { redirect_to games_path }
+        format.html { redirect_to games_path, flash: { warning: game.errors.full_messages.first } }
       end
     end
   end
@@ -39,8 +38,7 @@ class GamesController < ApplicationController
       if game.move(current_session, params[:cell_index].to_i)
         format.html { redirect_to game_path(game) }
       else
-        flash[:warning] = game.errors.full_messages.first
-        format.html { redirect_to game_path(game) }
+        format.html { redirect_to game_path(game), flash: { warning: game.errors.full_messages.first } }
       end
     end
   end
