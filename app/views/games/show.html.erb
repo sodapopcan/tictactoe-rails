@@ -1,4 +1,4 @@
-<%= turbo_stream_from dom_id(@game) %>
+<%= turbo_stream_from @game %>
 
 <ul>
   <li>
@@ -16,43 +16,10 @@
 
 <div class="grid place-items-center w-full h-full">
   <div class="rounded-md grid grid-rows-[100px_100px_100px] grid-cols-[100px_100px_100px] gap-[1px] p-0.5 bg-slate-500">
-    <% @game.board.each.with_index do |cell, cell_index| %>
-      <div class="grid place-items-center first:rounded-tl [&:nth-child(3)]:rounded-tr [&:nth-child(7)]:rounded-bl last:rounded-br relative w-full h-full bg-slate-100" data-cell-index="<%= cell_index %>">
-        <% if @game.board[cell_index] == @game.player_1_id.to_i %>
-          <div data-player="x" class="
-            grid place-items-center
-            w-full
-            h-full
-            before:absolute
-            before:w-full
-            before:h-[8px]
-            before:bg-slate-400
-            before:rotate-45
-            after:absolute
-            after:w-full
-            after:h-[8px]
-            after:bg-slate-400
-            after:-rotate-45
-          "></div>
-        <% elsif @game.board[cell_index] == @game.player_2_id.to_i %>
-          <div data-player="o" class="
-            grid place-items-center
-            w-[80%]
-            h-[80%]
-            rounded-full
-            bg-slate-400
-            after:content-['']
-            after:bg-slate-100
-            after:rounded-full
-            after:w-[80%]
-            after:h-[80%]
-          "></div>
-        <% else %>
-          <%= form_with url: play_game_path(@game, cell_index), method: :put, class: "w-full h-full" do |f| %>
-            <%= f.submit "", class: "block w-full h-full cursor-pointer" %>
-          <% end %>
-        <% end %>
-      </div>
+    <% @game.board.each.with_index do |_cell, cell_index| %>
+      <div id="cell_<%= cell_index %>" data-cell-index="<%= cell_index %>">
+        <%= render partial: "cell", locals: { game: @game, cell_index: cell_index } %>
+        </div>
     <% end %>
   </div>
 </div>

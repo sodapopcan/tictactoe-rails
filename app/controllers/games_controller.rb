@@ -41,6 +41,10 @@ class GamesController < ApplicationController
 
     respond_to do |format|
       if game.move(current_session, params[:cell_index].to_i)
+        game.broadcast_replace_to game,
+          partial: "games/cell",
+          locals: { game: game, cell_index: params[:cell_index].to_i },
+          target: "cell_#{params[:cell_index]}"
         format.html { redirect_to game_path(game) }
         format.turbo_stream
       else
